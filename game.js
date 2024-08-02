@@ -37,7 +37,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const tileIndex = tiles.indexOf(tile);
         const emptyIndex = tiles.indexOf(emptyTile);
 
-        const isValidMove = Math.abs(tileIndex - emptyIndex) === 1 || Math.abs(tileIndex - emptyIndex) === size;
+        const isValidMove = 
+            (tileIndex - 1 === emptyIndex && tileIndex % size !== 0) ||  // Left
+            (tileIndex + 1 === emptyIndex && (tileIndex + 1) % size !== 0) ||  // Right
+            (tileIndex - size === emptyIndex) ||  // Up
+            (tileIndex + size === emptyIndex);   // Down
 
         if (isValidMove) {
             [tiles[tileIndex], tiles[emptyIndex]] = [tiles[emptyIndex], tiles[tileIndex]];
@@ -47,11 +51,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function checkWin() {
-        const currentState = tiles.map(tile => tile.innerText || '').concat('');
-        if (currentState.join('') === solvedState.join('')) {
-            tiles.forEach(tile => tile.classList.add('correct'));
-        } else {
-            tiles.forEach(tile => tile.classList.remove('correct'));
+        const currentState = tiles.map(tile => tile.innerText || '');
+        const isSolved = currentState.join('') === solvedState.join('');
+
+        tiles.forEach((tile, index) => {
+            const correctValue = solvedState[index];
+            if (isSolved) {
+                tile.classList.add('correct');
+            } else {
+                tile.classList.remove('correct');
+            }
+        });
+
+        if (isSolved) {
+            console.log('Puzzle solved!');
         }
     }
 });
