@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('Puzzle version 4');
     const gameContainer = document.getElementById('game-container');
     const size = 4; // 4x4 puzzle
     const tiles = [];
